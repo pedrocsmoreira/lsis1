@@ -1,4 +1,4 @@
-package SIGC.lsis1.src.main.java.com.lsis1;
+package com.lsis1;
 
 
 public class Main {
