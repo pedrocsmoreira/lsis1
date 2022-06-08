@@ -1,9 +1,8 @@
 package com.lsis1;
 
+import io.vertx.core.Vertx;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
+public class Main{
+    Vertx vertx = Vertx.vertx();
+    vertx.deployVerticle(new ServerVerticle_basic());
 }
-

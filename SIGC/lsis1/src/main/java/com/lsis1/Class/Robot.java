@@ -24,4 +24,39 @@ public class Robot {
         this.macAdress = macAdress;
     }
 
+    public Robot(Robot r){
+        this.id = r.id;
+        this.idEquipa = r.idEquipa;
+        this.nome = r.nome;
+        this.macAdress = r.macAdress;
+    }
+
+    public int getID(){
+        return this.id;
+    }
+
+    public void setIdEquipa(int idEquipa){
+        this.idEquipa = idEquipa;
+    }
+
+    public int getIdEquipa(){
+        return this.idEquipa;
+    }
+
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+
+    public String getNome(){
+        return this.nome;
+    }
+
+    public void setMacAdress(String macAdress){
+        this.macAdress = macAdress;
+    }
+
+    public String getMacAdress(){
+        return this.macAdress;
+    }
+
 }
