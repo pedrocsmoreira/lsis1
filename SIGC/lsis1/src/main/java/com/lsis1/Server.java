@@ -1,4 +1,4 @@
-package SIGC.lsis1.src.main.java.com.lsis1;
+package com.lsis1;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
