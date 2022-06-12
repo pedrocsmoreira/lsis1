@@ -41,18 +41,22 @@ void setup(){
   pinMode(BIN2, OUTPUT);
   pinMode(BIN1, OUTPUT);
 
+  pinMode(ADATA1, INPUT_PULLUP);
+  pinMode(ADATA2, INPUT_PULLUP);
+  pinMode(BDATA1, INPUT_PULLUP);
+  pinMode(BDATA2, INPUT_PULLUP);
+
   setupWIFI();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
-
-  analogWrite(PWMA, 120);
-  analogWrite(PWMB, 120);
 
   attachInterrupt(digitalPinToInterrupt(PWMA), readEncoder,RISING);
   attachInterrupt(digitalPinToInterrupt(PWMB), readEncoder,RISING);
 }
 
 void left(){
+  analogWrite(PWMA, 40);
+  analogWrite(PWMB, 40);
   digitalWrite(AIN1, LOW);
   digitalWrite(AIN2, HIGH);
   digitalWrite(BIN1, HIGH);
@@ -60,6 +64,8 @@ void left(){
 }
 
 void right(){
+  analogWrite(PWMA, 40);
+  analogWrite(PWMB, 40);
   digitalWrite(AIN1, HIGH);
   digitalWrite(AIN2, LOW);
   digitalWrite(BIN1, LOW);
@@ -67,17 +73,21 @@ void right(){
 }
 
 void forward(){
+  analogWrite(PWMA, 120);
+  analogWrite(PWMB, 120);
   digitalWrite(AIN1, LOW);
   digitalWrite(AIN2, HIGH);
   digitalWrite(BIN1, LOW);
   digitalWrite(BIN2, HIGH);
 }
 
-void stopping(){
-  digitalWrite(AIN1, LOW);
-  digitalWrite(AIN2, LOW);
-  digitalWrite(BIN1, LOW);
-  digitalWrite(BIN2, LOW);
+void braking(){
+  analogWrite(PWMA, 255);
+  analogWrite(PWMB, 255);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, HIGH);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, HIGH);
 }
 
 
