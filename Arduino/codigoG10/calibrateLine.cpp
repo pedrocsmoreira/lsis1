@@ -2,7 +2,6 @@
 
 int mult[150][5];
 
-
 void lerValores(int L1, int L2, int L3, int L4, int L5){
   int n;
   for(n = 0; n < 150; n++){
@@ -13,6 +12,8 @@ void lerValores(int L1, int L2, int L3, int L4, int L5){
     mult[n][4] = analogRead(L5);
   }
 }
+
+
 
 int[5] verMaior(int L1, int L2, int L3, int L4, int L5){
   lerValores(int L1, int L2, int L3, int L4, int L5);
