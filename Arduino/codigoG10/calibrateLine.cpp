@@ -1,6 +1,7 @@
 #include "calibrateLine.h"
 
 int mult[150][5];
+  
 
 void lerValores(int L1, int L2, int L3, int L4, int L5){
   int n;

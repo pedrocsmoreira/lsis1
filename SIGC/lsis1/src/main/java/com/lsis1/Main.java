@@ -4,5 +4,5 @@ import io.vertx.core.Vertx;
 
 public class Main{
     Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new ServerVerticle_basic());
+    vertx.deployVerticle(new Server());
 }
