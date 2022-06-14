@@ -51,24 +51,10 @@ public class Server extends AbstractVerticle{
         router = Router.router(vertx);
 
         router.route().handler(StaticHandler.create().setWebRoot(webRoot));
-        // serve index
         router.route("/").handler(StaticHandler.create(webRoot));
 
-
-        router.route(HttpMethod.GET, "/alunosJson").handler(handlers::sendStringJson);
-        router.route(HttpMethod.GET, "/alunosString").handler(handlers::sendArrayAsString);
-        router.route(HttpMethod.GET, "/paginaNova")
-                .handler(handlers::paginaNova);//ou StaticHandler.create(webRoot + "/html/nova1.html"));
-        router.route(HttpMethod.GET, "/paginaNova2")
-                .handler(handlers::paginaNova2);//ou StaticHandler.create(webRoot + "/html/nova1.html"));
-
-        
-        // ATENÇÃO: necessário usar "bodyHandler" quando se pretende ler o body do pedido
-        //  - nos POST seguintes o body contém os dados do aluno
-        router.route("/alunos/*").handler(BodyHandler.create());
-        // criarALuno() e actualizarALuno() estão na classe Handlers
-        router.route(HttpMethod.POST, "/alunos").handler(handlers::criarAluno);
-        router.route(HttpMethod.PUT, "/alunos/:numAluno").handler(handlers::actualizarAluno);
+        router.route("/login").handler(BodyHandler.create());
+        router.route(HttpMethod.POST, "/login").handler(handlers::login);
 
         return router;
     }

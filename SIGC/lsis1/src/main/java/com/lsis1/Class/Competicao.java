@@ -5,6 +5,7 @@ import java.util.Date;
 public class Competicao {
     private int id;
     private String nome;
+    private String password;
     private Date dataCriacao;
 
     private static int contador = 0;
@@ -13,18 +14,21 @@ public class Competicao {
     public Competicao(){
         this.id = ++contador;
         this.nome = STR_DEFAULT;
+        this.password = STR_DEFAULT;
         this.dataCriacao = new Date();
     }
 
-    public Competicao(String nome){
+    public Competicao(String nome, String password){
         this.id = ++contador;
         this.nome = nome;
+        this.password = password;
         this.dataCriacao = new Date();
     }
 
     public Competicao(String nome, Date dataCriacao){
         this.id = ++contador;
         this.nome = nome;
+        this.password = STR_DEFAULT;
         this.dataCriacao = dataCriacao;
     }
 

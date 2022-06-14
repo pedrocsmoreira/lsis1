@@ -1,5 +1,6 @@
 package com.lsis1;
 
+import com.lsis1.Class.Competicao;
 import com.lsis1.Class.Repository;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
@@ -19,6 +20,13 @@ public class Handlers {
     Repository repo;
     public Handlers(Repository repo) {
         this.repo = repo;
+    }
+
+    public void login(RoutingContext rc){
+        JsonObject body = rc.getBodyAsJson();
+        String nomeComp = body.getString("comp");
+        String password = body.getString("password");
+        Competicao comp = new Competicao(nomeComp, password);
     }
     
 }
