@@ -1,45 +1,15 @@
 #include <analogWrite.h>
 
-//arduino pins, needs change
-#define IR1 A0
-#define IR2 A1
-#define IR3 A2
-#define IR4 A3
-#define IR5 A4
+#define IR1 4
+#define IR2 35
+#define IR3 34
+#define IR4 36
+#define IR5 39
 
-#define PWM1 3
-#define PWM2 5
-#define DIR1 2
-#define DIR2 6
-
-#define ADATA1
-#define ADATA2
-#define BDATA1
-#define BDATA2
-
-bool start = false;
-
-int startTime;
-int finalTime;
-
-int proportional;
-int derivative; 
-int integral;
-int position;
-int last_proportional;
-int power_error;
-
-const char* ssid = "LSIS";
-const char* password = "lsis2122";
-const char* mqtt_server = "192.168.0.1";
-
-const char* topic = "lsis1";
-const char* subtopic = "G10";
-
-//precisa de valores definidos
-int Kp = 0;
-int Ki = 0;
-int Kd = 0;
+#define PWM1 25
+#define PWM2 16
+#define DIR1 26
+#define DIR2 27
 
 double val[5];
 double xmin[5] = {55,55,65,57,63};
@@ -60,24 +30,16 @@ void setup(){
   pinMode(DIR1, OUTPUT);
   pinMode(DIR2, OUTPUT);
 
-  pinMode(ADATA1, INPUT_PULLUP);
-  pinMode(ADATA2, INPUT_PULLUP);
-  pinMode(BDATA1, INPUT_PULLUP);
-  pinMode(BDATA1, INPUT_PULLUP);
-
-  //setupWIFI();
-  //client.setServer(mqtt_server, 1883);
-  //client.setCallback(callback);
-
   analogWrite(PWM1, 0);
   analogWrite(PWM2, 0);
 }
 
 void motor(){
-  analogWrite(PWM1, 120);
-  analogWrite(PWM2, 120);
+  Serial.println("MOTORES");
+  analogWrite(PWM1, 255);
+  analogWrite(PWM2, 255);
   digitalWrite(DIR1, HIGH);
-  digitalWrite(DIR2, HIGH);
+  digitalWrite(DIR2, LOW);
 }
 
 void parar(){
@@ -88,30 +50,14 @@ void parar(){
 }
 
 void loop(){
-  /*if (!client.connected()) {
-    reconnect();
-  }*/
-  //client.loop();
-  /*while(start){
-    readLDR();
-  }*/
-  startTime = millis
+  Serial.println("LER LINHA");
   readLine();
-  //pid();
+  Serial.println("IR PRO MOTOR");
   motor();
-  if(val[0] <= (xmin[0] + 50) && val[1] <= (xmin[1] + 50) && val[2] <= (xmin[2] + 50) && val[3] <= (xmin[3] + 50) && val[4] <= (xmin[4] + 50)){
-    finalTime = millis() - startTime();
-    parar();
-    //message();
-    start = false;
-  }
+  delay(1000);
 }
 
-void readLDR(){
-  if(analogRead(LDR) <= 400){
-    start = !start;
-  }
-}
+
 
 void readLine(){
   val[0] = analogRead(IR1);
@@ -124,18 +70,4 @@ void readLine(){
     cal[n] = (val[n] - xmin[n])/(xmax[n] - xmin[n]) * 1000;
     total = total + (cal[n] * (n-2));
   }
-}
-
-void pid(){
-  proportional = position - 2000;
-  derivative = proportional - last_proportional;
-  integral += proportional;
-
-  last_proportional = proportional;
-  
-  power_error = proportional * Kp + integral * Ki + derivative * Kd;
-}
-
-void message(){
-
 }
