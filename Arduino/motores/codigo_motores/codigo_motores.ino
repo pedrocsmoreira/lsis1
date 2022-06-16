@@ -1,8 +1,8 @@
-#define L1 A0
-#define L2 A1
-#define L3 A2
-#define L4 A3
-#define L5 A4
+#define L1 A1
+#define L2 A2
+#define L3 A3
+#define L4 A4
+#define L5 A5
 
 #define PWM1 3
 #define PWM2 5
@@ -10,8 +10,8 @@
 #define DIR2 6
 
 double val[5];
-double xmin[5] = {55,55,65,57,63};
-double xmax[5] = {973,972,972,973,972};
+double xmin[5] = {81,66,87,81,68};
+double xmax[5] = {978,976,982,982,972};
 double cal[5];
 double total = 0;
 
@@ -31,15 +31,15 @@ void setup(){
 
 void loop(){
     readLine();
-    Serial.println(total);
-    if(total < -150){
+    if(val[0] >= (xmax[0] - 100) && val[1] >= (xmax[1] - 100) && val[2] >= (xmax[2] - 100) && val[3] >= (xmax[3] - 100) && val[4] >= (xmax[4] - 100) ){
+        stopping();
+    }else if(total < -300){
         right();
-    }else if(total > 150){
+    }else if(total > 300){
         left();
     }else {
         forward();
     }
-    delay(10000);
 }
 
 void forward(){
@@ -50,15 +50,15 @@ void forward(){
 }
 
 void left(){
-    analogWrite(PWM1, 255);
-    analogWrite(PWM2, 255);
+    analogWrite(PWM1, 75);
+    analogWrite(PWM2, 75);
     digitalWrite(DIR1, LOW);
     digitalWrite(DIR2, HIGH);
 }
 
 void right(){
-    analogWrite(PWM1, 255);
-    analogWrite(PWM2, 255);
+    analogWrite(PWM1, 75);
+    analogWrite(PWM2, 75);
     digitalWrite(DIR1, HIGH);
     digitalWrite(DIR2, LOW);
 }
@@ -69,6 +69,7 @@ void stopping(){
 }
 
 void readLine(){
+  total = 0;
   val[0] = analogRead(L1);
   val[1] = analogRead(L2);
   val[2] = analogRead(L3);
