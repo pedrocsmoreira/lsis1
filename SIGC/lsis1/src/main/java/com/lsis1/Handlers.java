@@ -55,8 +55,8 @@ public class Handlers {
     }
 
     public void adicionarDados(RoutingContext rc){
-        int numRonda;
-        int[] dados;
+        int numRonda = 0;
+        int[] dados = {};
         Competicao comp = rc.getBodyAsJson().mapTo(Competicao.class);
 
         DAL.adicionarDados(numRonda, dados);
@@ -64,7 +64,7 @@ public class Handlers {
         rc.response()
                 .setStatusCode(201)
                 .putHeader("content-type","application/json; charset=utf-8")
-                .end(Json.encodePrettily(aluno));
+                .end(Json.encodePrettily(comp));
     }
     
 }
