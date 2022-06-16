@@ -1,7 +1,7 @@
-function login(){
-    let form = document.getElementById("formLogin");
+function signup(){
+    let form = document.getElementById("formSignUp");
     let formdata = new FormData(form);
-    return fetch("/login",{
+    return fetch("/signup",{
         method: 'POST',
         body: formdata
     }).then((res) => {
@@ -11,8 +11,8 @@ function login(){
             window.alert("O username do utilizador inserido não existe!");
         throw Error("Erro no servidor!!");
         if(){
-            document.getElementById("formLogin").submit();
-            window.location.assign("/temposComp");
+            document.getElementById("formSignUp").submit();
+            window.location.assign("/criarComp");
         }
     }).then((result) => {
         console.log("LOGIN FEITO");

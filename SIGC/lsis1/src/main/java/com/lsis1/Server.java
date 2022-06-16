@@ -2,14 +2,20 @@ package com.lsis1;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import static io.vertx.ext.web.handler.StaticHandler.DEFAULT_WEB_ROOT;
-import com.lsis1.Class.MQTT;
-import com.lsis1.Class.Repository;
+
+import com.lsis1.Model.Competicao;
+import com.lsis1.Model.MQTT;
+import com.lsis1.Model.Repository;
+import com.lsis1.Controller.compController;
 
 /*
  * 
@@ -54,9 +60,10 @@ public class Server extends AbstractVerticle{
         router.route("/").handler(StaticHandler.create(webRoot));
 
         router.route("/login").handler(BodyHandler.create());
-        router.route(HttpMethod.POST, "/login").handler(handlers::login);
+        router.route(HttpMethod.POST, "/criarComp").handler(handlers::criarCompeticao);
+        router.route(HttpMethod.POST, "/loginComp").handler(handlers::loginCompeticao);
+        router.route(HttpMethod.POST, "/addRonda").handler(handlers::adicionarDados);
 
         return router;
     }
-
 }

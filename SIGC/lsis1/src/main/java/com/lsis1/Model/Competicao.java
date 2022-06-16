@@ -1,4 +1,4 @@
-package com.lsis1.Class;
+package com.lsis1.Model;
 
 import java.util.Date;
 
@@ -25,10 +25,10 @@ public class Competicao {
         this.dataCriacao = new Date();
     }
 
-    public Competicao(String nome, Date dataCriacao){
+    public Competicao(String nome, String password, Date dataCriacao){
         this.id = ++contador;
         this.nome = nome;
-        this.password = STR_DEFAULT;
+        this.password = password;
         this.dataCriacao = dataCriacao;
     }
 

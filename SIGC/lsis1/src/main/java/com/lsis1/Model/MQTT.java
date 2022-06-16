@@ -1,4 +1,4 @@
-package com.lsis1.Class;
+package com.lsis1.Model;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

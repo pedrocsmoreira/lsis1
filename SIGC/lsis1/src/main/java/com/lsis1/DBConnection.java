@@ -1,11 +1,11 @@
-package com.lsis1.Class;
+package com.lsis1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String database = 'jdbc:mysql://localhost:3036/' + 'easypark';
+    private static final String database = 'jdbc:mysql://localhost:3036/' + '';
 	private static final String user = 'test';
 	private static final String pass = 'test';
 
