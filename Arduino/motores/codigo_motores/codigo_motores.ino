@@ -11,6 +11,8 @@
 #define DIR1 4
 #define DIR2 6
 
+boolean start = false;
+
 double val[5];
 double xmin[5] = {81,66,87,81,68};
 double xmax[5] = {978,976,982,982,972};
@@ -21,13 +23,13 @@ void setup(){
     Serial.begin(9600);
 
     pinMode(LDR, INPUT);
-    
+
     pinMode(L1, INPUT);
     pinMode(L2, INPUT);
     pinMode(L3, INPUT);
     pinMode(L4, INPUT);
     pinMode(L5, INPUT);
-    
+
     pinMode(PWM1, OUTPUT);
     pinMode(PWM2, OUTPUT);
     pinMode(DIR1, OUTPUT);
@@ -35,10 +37,14 @@ void setup(){
 }
 
 void loop(){
-    Serial.println(analogRead(LDR));
+    while(!start){
+        readLDR();
+    }
     readLine();
     if(val[0] >= (xmax[0] - 100) && val[1] >= (xmax[1] - 100) && val[2] >= (xmax[2] - 100) && val[3] >= (xmax[3] - 100) && val[4] >= (xmax[4] - 100) ){
         stopping();
+        sendMessage();
+        start = !start;
     }else if(total < -300){
         right();
     }else if(total > 300){
@@ -72,6 +78,16 @@ void right(){
 void stopping(){
     analogWrite(PWM1, 0);
     analogWrite(PWM2, 0);
+}
+
+void sendMessage(){
+    
+}
+
+void readLDR(){
+    if(analogRead(LDR) > 750){
+        start = !start;
+    }
 }
 
 void readLine(){
