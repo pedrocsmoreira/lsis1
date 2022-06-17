@@ -1,3 +1,5 @@
+#define LDR A0
+
 #define L1 A1
 #define L2 A2
 #define L3 A3
@@ -17,6 +19,9 @@ double total = 0;
 
 void setup(){
     Serial.begin(9600);
+
+    pinMode(LDR, INPUT);
+    
     pinMode(L1, INPUT);
     pinMode(L2, INPUT);
     pinMode(L3, INPUT);
@@ -30,6 +35,7 @@ void setup(){
 }
 
 void loop(){
+    Serial.println(analogRead(LDR));
     readLine();
     if(val[0] >= (xmax[0] - 100) && val[1] >= (xmax[1] - 100) && val[2] >= (xmax[2] - 100) && val[3] >= (xmax[3] - 100) && val[4] >= (xmax[4] - 100) ){
         stopping();
