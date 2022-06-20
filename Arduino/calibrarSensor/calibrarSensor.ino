@@ -4,9 +4,8 @@
 #define L4 A4
 #define L5 A5
 
-int mult[150][5];
 int xmax[5] = {0, 0, 0, 0, 0};
-int xmin[5] = {100, 100, 100, 100, 100};
+int xmin[5] = {1023, 1023, 1023, 1023, 1023};
 
 void setup() {
   Serial.begin(9600);

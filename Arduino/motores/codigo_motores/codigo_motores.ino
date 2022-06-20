@@ -11,7 +11,15 @@
 #define DIR1 4
 #define DIR2 6
 
+#define MA1 7
+#define MA2 8
+#define MB1 9
+#define MB2 10
+
 boolean start = false;
+
+unsigned long startTime;
+unsigned long endTime;
 
 double val[5];
 double xmin[5] = {81,66,87,81,68};
@@ -34,20 +42,31 @@ void setup(){
     pinMode(PWM2, OUTPUT);
     pinMode(DIR1, OUTPUT);
     pinMode(DIR2, OUTPUT);
+
+    pinMode(MA1, INPUT_PULLUP);
+    pinMode(MA2, INPUT_PULLUP);
+    pinMode(MB1, INPUT_PULLUP);
+    pinMode(MB2, INPUT_PULLUP);
 }
 
 void loop(){
     while(!start){
         readLDR();
     }
+    run();
+}
+
+void run(){
+    startTime = millis();
     readLine();
     if(val[0] >= (xmax[0] - 100) && val[1] >= (xmax[1] - 100) && val[2] >= (xmax[2] - 100) && val[3] >= (xmax[3] - 100) && val[4] >= (xmax[4] - 100) ){
         stopping();
+        endTime = millis();
         sendMessage();
         start = !start;
-    }else if(total < -300){
+    }else if(total < -350){
         right();
-    }else if(total > 300){
+    }else if(total > 350){
         left();
     }else {
         forward();
@@ -62,15 +81,15 @@ void forward(){
 }
 
 void left(){
-    analogWrite(PWM1, 75);
-    analogWrite(PWM2, 75);
+    analogWrite(PWM1, 100);
+    analogWrite(PWM2, 100);
     digitalWrite(DIR1, LOW);
     digitalWrite(DIR2, HIGH);
 }
 
 void right(){
-    analogWrite(PWM1, 75);
-    analogWrite(PWM2, 75);
+    analogWrite(PWM1, 100);
+    analogWrite(PWM2, 100);
     digitalWrite(DIR1, HIGH);
     digitalWrite(DIR2, LOW);
 }
@@ -81,7 +100,9 @@ void stopping(){
 }
 
 void sendMessage(){
-    
+    unsigned long time = endTime - startTime;
+    String message = maxspeed + "#" + time;
+    Serial.write(message);
 }
 
 void readLDR(){
