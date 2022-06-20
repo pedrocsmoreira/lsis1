@@ -21,9 +21,11 @@ boolean start = false;
 unsigned long startTime;
 unsigned long endTime;
 
+82 - 80 - 96 - 94 - 79
+
 double val[5];
-double xmin[5] = {81,66,87,81,68};
-double xmax[5] = {978,976,982,982,972};
+double xmin[5] = {82,80,96,94,79};
+double xmax[5] = {982,980,983,982,976};
 double cal[5];
 double total = 0;
 

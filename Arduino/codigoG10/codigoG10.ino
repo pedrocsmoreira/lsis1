@@ -1,7 +1,3 @@
-#include <analogWrite.h>
-#include <WiFi.h>
-#include <PubSubClient.h>
-
  //arduino pins, need change
 #define IR1 A0
 #define IR2 A1
