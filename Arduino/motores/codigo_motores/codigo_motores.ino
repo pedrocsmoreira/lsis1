@@ -81,7 +81,8 @@ void stopping(){
 }
 
 void sendMessage(){
-    
+    String message = velocidade + "#" + tempo;
+    Serial.println();
 }
 
 void readLDR(){
