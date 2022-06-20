@@ -1,76 +1,52 @@
-#define LDR A0
+#include <util/atomic.h>
 
-#define L1 A1
-#define L2 A2
-#define L3 A3
-#define L4 A4
-#define L5 A5
 
-#define PWM1 3
-#define PWM2 5
-#define DIR1 4
-#define DIR2 6
+#define L1 A0
+#define L2 A1
+#define L3 A2
+#define L4 A3
+#define L5 A4
 
-#define MA1 7
-#define MA2 8
-#define MB1 9
-#define MB2 10
+#define PWMA 3
+#define PWMB 5
+#define AIN1 7
+#define AIN2 8
+#define BIN1 6
+#define BIN2 4
 
-boolean start = false;
-
-unsigned long startTime;
-unsigned long endTime;
+#define ENCA1 8
+#define ENCA2 9
+#define ENCB1 10
+#define ENCB2 11
 
 double val[5];
-double xmin[5] = {81,66,87,81,68};
-double xmax[5] = {978,976,982,982,972};
+double xmin[5] = {55,55,65,57,63};
+double xmax[5] = {973,972,972,973,972};
 double cal[5];
 double total = 0;
 
 void setup(){
-    Serial.begin(9600);
+  Serial.begin(9600);
+  pinMode(IR1, INPUT);
+  pinMode(IR2, INPUT);
+  pinMode(IR3, INPUT);
+  pinMode(IR4, INPUT);
+  pinMode(IR5, INPUT);
 
-    pinMode(LDR, INPUT);
+  pinMode(PWMA, OUTPUT);
+  pinMode(PWMB, OUTPUT);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(BIN2, OUTPUT);
+  pinMode(BIN1, OUTPUT);
 
-    pinMode(L1, INPUT);
-    pinMode(L2, INPUT);
-    pinMode(L3, INPUT);
-    pinMode(L4, INPUT);
-    pinMode(L5, INPUT);
+  pinMode(ENCA1, INPUT_PULLUP);
+  pinMode(ENCA2, INPUT_PULLUP);
+  pinMode(ENCB1, INPUT_PULLUP);
+  pinMode(ENCB2, INPUT_PULLUP);
 
-    pinMode(PWM1, OUTPUT);
-    pinMode(PWM2, OUTPUT);
-    pinMode(DIR1, OUTPUT);
-    pinMode(DIR2, OUTPUT);
-
-    pinMode(MA1, INPUT_PULLUP);
-    pinMode(MA2, INPUT_PULLUP);
-    pinMode(MB1, INPUT_PULLUP);
-    pinMode(MB2, INPUT_PULLUP);
-}
-
-void loop(){
-    while(!start){
-        readLDR();
-    }
-    run();
-}
-
-void run(){
-    startTime = millis();
-    readLine();
-    if(val[0] >= (xmax[0] - 100) && val[1] >= (xmax[1] - 100) && val[2] >= (xmax[2] - 100) && val[3] >= (xmax[3] - 100) && val[4] >= (xmax[4] - 100) ){
-        stopping();
-        endTime = millis();
-        sendMessage();
-        start = !start;
-    }else if(total < -350){
-        right();
-    }else if(total > 350){
-        left();
-    }else {
-        forward();
-    }
+  attachInterrupt(digitalPinToInterrupt(ENCA1), readEncoder,RISING);
+  attachInterrupt(digitalPinToInterrupt(ENCB1), readEncoder,RISING);
 }
 
 void forward(){
@@ -99,20 +75,48 @@ void stopping(){
     analogWrite(PWM2, 0);
 }
 
-void sendMessage(){
-    unsigned long time = endTime - startTime;
-    String message = maxspeed + "#" + time;
-    Serial.write(message);
+void loop(){
+    forward();
+    delay(200);
+    Serial.println(digitalRead(ENCA1));
+    Serial.println(digitalRead(ENCA2));
+    Serial.println(digitalRead(ENCB1));
+    Serial.println(digitalRead(ENCB1));
+    delay(200);
+    Serial.println(digitalRead(ENCA1));
+    Serial.println(digitalRead(ENCA2));
+    Serial.println(digitalRead(ENCB1));
+    Serial.println(digitalRead(ENCB1));
+    delay(200);
+    
+  /*
+    if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+  while(!start){
+    readLDR();
+  }
+  readLine();
+  Serial.println(total);
+  if(total < 0){
+    right();
+  }else if(total > 0){
+    left();
+  }else {
+    forward();
+  }
+  delay(10000);
+  */
 }
 
 void readLDR(){
-    if(analogRead(LDR) > 750){
-        start = !start;
-    }
+  if(analogRead(LDR) > ){
+    start = !start;
+  }
 }
 
 void readLine(){
-  total = 0;
   val[0] = analogRead(L1);
   val[1] = analogRead(L2);
   val[2] = analogRead(L3);

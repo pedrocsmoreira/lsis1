@@ -1,124 +1,118 @@
-#define L1 A0
-#define L2 A1
-#define L3 A2
-#define L4 A3
-#define L5 A4
+#define LDR A0
 
-#define PWMA 3
-#define PWMB 5
-#define AIN1 7
-#define AIN2 8
-#define BIN1 6
-#define BIN2 4
+#define L1 A1
+#define L2 A2
+#define L3 A3
+#define L4 A4
+#define L5 A5
 
-#define ADATA1
-#define ADATA2
-#define BDATA1
-#define BDATA2
+#define PWM1 3
+#define PWM2 5
+#define DIR1 4
+#define DIR2 6
 
-const char* ssid = "LSIS";
-const char* password = "lsis2122";
-const char* mqtt_server = "192.168.0.1";
+#define MA1 7
+#define MA2 8
+#define MB1 9
+#define MB2 10
+
+boolean start = false;
+
+unsigned long startTime;
+unsigned long endTime;
 
 double val[5];
-double xmin[5] = {55,55,65,57,63};
-double xmax[5] = {973,972,972,973,972};
+double xmin[5] = {81,66,87,81,68};
+double xmax[5] = {978,976,982,982,972};
 double cal[5];
 double total = 0;
 
 void setup(){
-  Serial.begin(9600);
-  pinMode(IR1, INPUT);
-  pinMode(IR2, INPUT);
-  pinMode(IR3, INPUT);
-  pinMode(IR4, INPUT);
-  pinMode(IR5, INPUT);
+    Serial.begin(9600);
 
-  pinMode(PWMA, OUTPUT);
-  pinMode(PWMB, OUTPUT);
-  pinMode(AIN1, OUTPUT);
-  pinMode(AIN2, OUTPUT);
-  pinMode(BIN2, OUTPUT);
-  pinMode(BIN1, OUTPUT);
+    pinMode(LDR, INPUT);
 
-  pinMode(ADATA1, INPUT_PULLUP);
-  pinMode(ADATA2, INPUT_PULLUP);
-  pinMode(BDATA1, INPUT_PULLUP);
-  pinMode(BDATA2, INPUT_PULLUP);
+    pinMode(L1, INPUT);
+    pinMode(L2, INPUT);
+    pinMode(L3, INPUT);
+    pinMode(L4, INPUT);
+    pinMode(L5, INPUT);
 
-  setupWIFI();
-  client.setServer(mqtt_server, 1883);
-  client.setCallback(callback);
+    pinMode(PWM1, OUTPUT);
+    pinMode(PWM2, OUTPUT);
+    pinMode(DIR1, OUTPUT);
+    pinMode(DIR2, OUTPUT);
 
-  attachInterrupt(digitalPinToInterrupt(PWMA), readEncoder,RISING);
-  attachInterrupt(digitalPinToInterrupt(PWMB), readEncoder,RISING);
+    pinMode(MA1, INPUT_PULLUP);
+    pinMode(MA2, INPUT_PULLUP);
+    pinMode(MB1, INPUT_PULLUP);
+    pinMode(MB2, INPUT_PULLUP);
 }
 
-void left(){
-  analogWrite(PWMA, 40);
-  analogWrite(PWMB, 40);
-  digitalWrite(AIN1, LOW);
-  digitalWrite(AIN2, HIGH);
-  digitalWrite(BIN1, HIGH);
-  digitalWrite(BIN2, LOW);
+void loop(){
+    while(!start){
+        readLDR();
+    }
+    run();
 }
 
-void right(){
-  analogWrite(PWMA, 40);
-  analogWrite(PWMB, 40);
-  digitalWrite(AIN1, HIGH);
-  digitalWrite(AIN2, LOW);
-  digitalWrite(BIN1, LOW);
-  digitalWrite(BIN2, HIGH);
+void run(){
+    startTime = millis();
+    readLine();
+    if(val[0] >= (xmax[0] - 100) && val[1] >= (xmax[1] - 100) && val[2] >= (xmax[2] - 100) && val[3] >= (xmax[3] - 100) && val[4] >= (xmax[4] - 100) ){
+        stopping();
+        endTime = millis();
+        sendMessage();
+        start = !start;
+    }else if(total < -350){
+        right();
+    }else if(total > 350){
+        left();
+    }else {
+        forward();
+    }
 }
 
 void forward(){
-  analogWrite(PWMA, 120);
-  analogWrite(PWMB, 120);
-  digitalWrite(AIN1, LOW);
-  digitalWrite(AIN2, HIGH);
-  digitalWrite(BIN1, LOW);
-  digitalWrite(BIN2, HIGH);
+    analogWrite(PWM1, 255);
+    analogWrite(PWM2, 255);
+    digitalWrite(DIR1, HIGH);
+    digitalWrite(DIR2, HIGH);
 }
 
-void braking(){
-  analogWrite(PWMA, 255);
-  analogWrite(PWMB, 255);
-  digitalWrite(AIN1, HIGH);
-  digitalWrite(AIN2, HIGH);
-  digitalWrite(BIN1, HIGH);
-  digitalWrite(BIN2, HIGH);
+void left(){
+    analogWrite(PWM1, 100);
+    analogWrite(PWM2, 100);
+    digitalWrite(DIR1, LOW);
+    digitalWrite(DIR2, HIGH);
 }
 
+void right(){
+    analogWrite(PWM1, 100);
+    analogWrite(PWM2, 100);
+    digitalWrite(DIR1, HIGH);
+    digitalWrite(DIR2, LOW);
+}
 
+void stopping(){
+    analogWrite(PWM1, 0);
+    analogWrite(PWM2, 0);
+}
 
-void loop(){
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
-  while(!start){
-    readLDR();
-  }
-  readLine();
-  Serial.println(total);
-  if(total < 0){
-    right();
-  }else if(total > 0){
-    left();
-  }else {
-    forward();
-  }
-  delay(10000);
+void sendMessage(){
+    unsigned long time = endTime - startTime;
+    String message = maxspeed + "#" + time;
+    Serial.write(message);
 }
 
 void readLDR(){
-  if(analogRead(LDR) > ){
-    start = !start;
-  }
+    if(analogRead(LDR) > 750){
+        start = !start;
+    }
 }
 
 void readLine(){
+  total = 0;
   val[0] = analogRead(L1);
   val[1] = analogRead(L2);
   val[2] = analogRead(L3);
