@@ -21,6 +21,10 @@ boolean start = false;
 unsigned long startTime;
 unsigned long endTime;
 
+int mult[5];
+int xmax[5] = {0, 0, 0, 0, 0};
+int xmin[5] = {1023, 1023, 1023, 1023, 1023};
+
 double val[5];
 double xmin[5] = {81,66,87,81,68};
 double xmax[5] = {978,976,982,982,972};
@@ -47,6 +51,10 @@ void setup(){
     pinMode(MA2, INPUT_PULLUP);
     pinMode(MB1, INPUT_PULLUP);
     pinMode(MB2, INPUT_PULLUP);
+
+    calibrar();
+    startTime = 0;
+    endTime = 0;
 }
 
 void loop(){
@@ -103,6 +111,24 @@ void sendMessage(){
     unsigned long time = endTime - startTime;
     String message = maxspeed + "#" + time;
     Serial.write(message);
+}
+
+void calibrar(){
+    startTime = millis();
+    while((millis()-startTime) < 10000){
+        mult[0] = analogRead(L1);
+        mult[1] = analogRead(L2);
+        mult[2] = analogRead(L3);
+        mult[3] = analogRead(L4);
+        mult[4] = analogRead(L5);
+        for(int i = 0; i < 5; i++){
+            if(mult[i] > xmax[i]){
+                xmax[i] = mult[i];
+            }else if(mult[i] < xmin[i]){
+                xmin[i] = mult[i];
+            }
+        }
+    }
 }
 
 void readLDR(){

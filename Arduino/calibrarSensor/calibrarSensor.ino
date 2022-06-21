@@ -17,7 +17,7 @@ void setup() {
 }
 
 void loop() {
-    verMaior();
+    lerValores();
     Serial.println("LER MAIORES");
     Serial.print(xmax[0]);
     Serial.print(" - ");
@@ -28,7 +28,6 @@ void loop() {
     Serial.print(xmax[3]);
     Serial.print(" - ");
     Serial.println(xmax[4]);
-    delay(5000);
     verMenor();
     Serial.println("LER MENORES");
     Serial.print(xmin[0]);
@@ -44,36 +43,19 @@ void loop() {
 }
 
 void lerValores(){
-  int n;
-  for(n = 0; n < 150; n++){
-    mult[n][0] = analogRead(L1);
-    mult[n][1] = analogRead(L2);
-    mult[n][2] = analogRead(L3);
-    mult[n][3] = analogRead(L4);
-    mult[n][4] = analogRead(L5);
-  }
-}
-
-void verMaior(){
-  lerValores();
-  int i, j;
-  for(i = 0; i < 150; i++){
-    for(j = 0; j < 5; j++){
-      if(mult[i][j] > xmax[j]){
-        xmax[j] = mult[i][j];
-      }
+  startTime = millis();
+    while((millis()-startTime) < 10000){
+        mult[0] = analogRead(L1);
+        mult[1] = analogRead(L2);
+        mult[2] = analogRead(L3);
+        mult[3] = analogRead(L4);
+        mult[4] = analogRead(L5);
+        for(int i = 0; i < 5; i++){
+            if(mult[i] > xmax[i]){
+                xmax[i] = mult[i];
+            }else if(mult[i] < xmin[i]){
+                xmin[i] = mult[i];
+            }
+        }
     }
-  }
-}
-
-void verMenor(){
-  lerValores();
-  int i, j;
-  for(i = 0; i < 150; i++){
-    for(j = 0; j < 5; j++){
-      if(mult[i][j] < xmin[j]){
-        xmin[j] = mult[i][j];
-      }
-    }
-  }
 }

@@ -1,0 +1,23 @@
+double setpoint = 360;
+double Kp = 0.32;
+double Ki = 0.1;
+double Kd = -0.3;
+
+void Compute(){
+    angle = (0.9 * count); //count to angle conversion
+    error = setpoint - angle;
+  
+    changeError = error - last_error; // derivative term
+    totalError += error; //accumalate errors to find integral term
+    pidTerm = (Kp * error) + (Ki * totalError) + (Kd * changeError);//total gain
+    pidTerm = constrain(pidTerm, -255, 255);//constraining to appropriate value
+    pidTerm_scaled = abs(pidTerm);//make sure it's a positive value
+
+    last_error = error;
+}
+
+void SetTunings(double Kp, double Ki, double Kd){
+   kp = Kp;
+   ki = Ki;
+   kd = Kd;
+}
