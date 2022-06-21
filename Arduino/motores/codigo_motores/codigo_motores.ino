@@ -1,18 +1,15 @@
 #include <util/atomic.h>
 
+#define IR1 A0
+#define IR2 A1
+#define IR3 A2
+#define IR4 A3
+#define IR5 A4
 
-#define L1 A0
-#define L2 A1
-#define L3 A2
-#define L4 A3
-#define L5 A4
-
-#define PWMA 3
-#define PWMB 5
-#define AIN1 7
-#define AIN2 8
-#define BIN1 6
-#define BIN2 4
+#define PWM1 3
+#define PWM2 5
+#define DIR1 4
+#define DIR2 6
 
 #define ENCA1 8
 #define ENCA2 9
@@ -33,20 +30,15 @@ void setup(){
   pinMode(IR4, INPUT);
   pinMode(IR5, INPUT);
 
-  pinMode(PWMA, OUTPUT);
-  pinMode(PWMB, OUTPUT);
-  pinMode(AIN1, OUTPUT);
-  pinMode(AIN2, OUTPUT);
-  pinMode(BIN2, OUTPUT);
-  pinMode(BIN1, OUTPUT);
+  pinMode(PWM1, OUTPUT);
+  pinMode(PWM2, OUTPUT);
+  pinMode(DIR1, OUTPUT);
+  pinMode(DIR2, OUTPUT);
 
   pinMode(ENCA1, INPUT_PULLUP);
   pinMode(ENCA2, INPUT_PULLUP);
   pinMode(ENCB1, INPUT_PULLUP);
   pinMode(ENCB2, INPUT_PULLUP);
-
-  attachInterrupt(digitalPinToInterrupt(ENCA1), readEncoder,RISING);
-  attachInterrupt(digitalPinToInterrupt(ENCB1), readEncoder,RISING);
 }
 
 void forward(){
@@ -78,19 +70,27 @@ void stopping(){
 void loop(){
     forward();
     delay(200);
+    Serial.print("ENCA - ");
     Serial.println(digitalRead(ENCA1));
+    Serial.print("ENCA - ");
     Serial.println(digitalRead(ENCA2));
+    Serial.print("ENCB - ");
     Serial.println(digitalRead(ENCB1));
-    Serial.println(digitalRead(ENCB1));
-    delay(200);
+    Serial.print("ENCB - ");
+    Serial.println(digitalRead(ENCB2));
+    delay(1000);
+    Serial.print("ENCA - ");
     Serial.println(digitalRead(ENCA1));
+    Serial.print("ENCA - ");
     Serial.println(digitalRead(ENCA2));
+    Serial.print("ENCB - ");
     Serial.println(digitalRead(ENCB1));
-    Serial.println(digitalRead(ENCB1));
-    delay(200);
+    Serial.print("ENCB - ");
+    Serial.println(digitalRead(ENCB2));
+    delay(5000);
     
   /*
-    if (!client.connected()) {
+  if (!client.connected()) {
     reconnect();
   }
   client.loop();
@@ -110,18 +110,12 @@ void loop(){
   */
 }
 
-void readLDR(){
-  if(analogRead(LDR) > ){
-    start = !start;
-  }
-}
-
 void readLine(){
-  val[0] = analogRead(L1);
-  val[1] = analogRead(L2);
-  val[2] = analogRead(L3);
-  val[3] = analogRead(L4);
-  val[4] = analogRead(L5);
+  val[0] = analogRead(IR1);
+  val[1] = analogRead(IR2);
+  val[2] = analogRead(IR3);
+  val[3] = analogRead(IR4);
+  val[4] = analogRead(IR5);
   int n;
   for(n = 0; n < 5; n++){
     cal[n] = (val[n] - xmin[n])/(xmax[n] - xmin[n]) * 1000;

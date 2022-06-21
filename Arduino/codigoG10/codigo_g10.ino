@@ -21,13 +21,17 @@ boolean start = false;
 unsigned long startTime;
 unsigned long endTime;
 
+<<<<<<< HEAD
 int mult[5];
 int xmax[5] = {0, 0, 0, 0, 0};
 int xmin[5] = {1023, 1023, 1023, 1023, 1023};
+=======
+82 - 80 - 96 - 94 - 79
+>>>>>>> d7e99b9a2d398ed2be13c1bd2cf740191516311f
 
 double val[5];
-double xmin[5] = {81,66,87,81,68};
-double xmax[5] = {978,976,982,982,972};
+double xmin[5] = {82,80,96,94,79};
+double xmax[5] = {982,980,983,982,976};
 double cal[5];
 double total = 0;
 
