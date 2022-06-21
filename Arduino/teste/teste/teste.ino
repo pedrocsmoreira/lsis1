@@ -20,11 +20,10 @@ boolean start = false;
 
 unsigned long startTime;
 unsigned long endTime;
-int maxspeed;
 
+int xmax[5] = {0, 0, 0, 0, 0};
+int xmin[5] = {1023, 1023, 1023, 1023, 1023};
 double val[5];
-double xmin[5] = {82,80,96,94,79};
-double xmax[5] = {982,980,983,982,976};
 double cal[5];
 double total = 0;
 
@@ -48,6 +47,10 @@ void setup(){
     pinMode(MA2, INPUT_PULLUP);
     pinMode(MB1, INPUT_PULLUP);
     pinMode(MB2, INPUT_PULLUP);
+
+    calibrar();
+    startTime = 0;
+    endTime = 0;
 }
 
 void loop(){
@@ -65,11 +68,11 @@ void run(){
     if(val[0] >= (xmax[0] - 100) && val[1] >= (xmax[1] - 100) && val[2] >= (xmax[2] - 100) && val[3] >= (xmax[3] - 100) && val[4] >= (xmax[4] - 100) ){
         stopping();
         endTime = millis();
-        sendMessage();
+        //sendMessage();
         start = !start;
-    }else if(total < -200){
+    }else if(total < -350){
         right();
-    }else if(total > 200){
+    }else if(total > 350){
         left();
     }else {
         forward();
@@ -84,17 +87,17 @@ void forward(){
 }
 
 void left(){
-    analogWrite(PWM1, 50);
-    analogWrite(PWM2, 50);
-    digitalWrite(DIR1, LOW);
+    analogWrite(PWM1, 120);
+    analogWrite(PWM2, 200);
+    digitalWrite(DIR1, HIGH);
     digitalWrite(DIR2, HIGH);
 }
 
 void right(){
-    analogWrite(PWM1, 50);
-    analogWrite(PWM2, 50);
+    analogWrite(PWM1, 200);
+    analogWrite(PWM2, 120);
     digitalWrite(DIR1, HIGH);
-    digitalWrite(DIR2, LOW);
+    digitalWrite(DIR2, HIGH);
 }
 
 void stopping(){
@@ -102,10 +105,22 @@ void stopping(){
     analogWrite(PWM2, 0);
 }
 
-void sendMessage(){
-    unsigned long time = endTime - startTime;
-    String message = maxspeed + "#" + time;
-    Serial.println(message);
+void calibrar(){
+    startTime = millis();
+    while((millis()-startTime) < 10000){
+        val[0] = analogRead(L1);
+        val[1] = analogRead(L2);
+        val[2] = analogRead(L3);
+        val[3] = analogRead(L4);
+        val[4] = analogRead(L5);
+        for(int i = 0; i < 5; i++){
+            if(val[i] > xmax[i]){
+                xmax[i] = val[i];
+            }else if(val[i] < xmin[i]){
+                xmin[i] = val[i];
+            }
+        }
+    }
 }
 
 void readLDR(){

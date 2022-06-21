@@ -21,17 +21,9 @@ boolean start = false;
 unsigned long startTime;
 unsigned long endTime;
 
-<<<<<<< HEAD
-int mult[5];
 int xmax[5] = {0, 0, 0, 0, 0};
 int xmin[5] = {1023, 1023, 1023, 1023, 1023};
-=======
-82 - 80 - 96 - 94 - 79
->>>>>>> d7e99b9a2d398ed2be13c1bd2cf740191516311f
-
 double val[5];
-double xmin[5] = {82,80,96,94,79};
-double xmax[5] = {982,980,983,982,976};
 double cal[5];
 double total = 0;
 
@@ -120,11 +112,11 @@ void sendMessage(){
 void calibrar(){
     startTime = millis();
     while((millis()-startTime) < 10000){
-        mult[0] = analogRead(L1);
-        mult[1] = analogRead(L2);
-        mult[2] = analogRead(L3);
-        mult[3] = analogRead(L4);
-        mult[4] = analogRead(L5);
+        val[0] = analogRead(L1);
+        val[1] = analogRead(L2);
+        val[2] = analogRead(L3);
+        val[3] = analogRead(L4);
+        val[4] = analogRead(L5);
         for(int i = 0; i < 5; i++){
             if(mult[i] > xmax[i]){
                 xmax[i] = mult[i];
