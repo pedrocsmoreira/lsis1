@@ -1,12 +1,13 @@
-#define L1 A1
-#define L2 A2
-#define L3 A3
-#define L4 A4
-#define L5 A5
+#define L1 2
+#define L2 4
+#define L3 35
+#define L4 34
+#define L5 36
 
-int mult[150][5];
+int mult[5];
 int xmax[5] = {0, 0, 0, 0, 0};
-int xmin[5] = {1023, 1023, 1023, 1023, 1023};
+int xmin[5] = {4095, 4095, 4095, 4095, 4095};
+usigned long startTime = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -44,7 +45,7 @@ void loop() {
 }
 
 void lerValores(){
-  startTime = millis();
+    startTime = millis();
     while((millis()-startTime) < 10000){
         mult[0] = analogRead(L1);
         mult[1] = analogRead(L2);

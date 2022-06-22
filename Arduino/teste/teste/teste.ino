@@ -70,9 +70,9 @@ void run(){
         endTime = millis();
         //sendMessage();
         start = !start;
-    }else if(total < -350){
+    }else if(total < -250){
         right();
-    }else if(total > 350){
+    }else if(total > 250){
         left();
     }else {
         forward();
@@ -87,17 +87,17 @@ void forward(){
 }
 
 void left(){
-    analogWrite(PWM1, 120);
-    analogWrite(PWM2, 200);
-    digitalWrite(DIR1, HIGH);
+    analogWrite(PWM1, 30);
+    analogWrite(PWM2, 60);
+    digitalWrite(DIR1, LOW);
     digitalWrite(DIR2, HIGH);
 }
 
 void right(){
-    analogWrite(PWM1, 200);
-    analogWrite(PWM2, 120);
+    analogWrite(PWM1, 60);
+    analogWrite(PWM2, 30);
     digitalWrite(DIR1, HIGH);
-    digitalWrite(DIR2, HIGH);
+    digitalWrite(DIR2, LOW);
 }
 
 void stopping(){
