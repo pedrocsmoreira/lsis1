@@ -30,7 +30,6 @@ void loop() {
     Serial.print(xmax[3]);
     Serial.print(" - ");
     Serial.println(xmax[4]);
-    verMenor();
     Serial.println("LER MENORES");
     Serial.print(xmin[0]);
     Serial.print(" - ");
