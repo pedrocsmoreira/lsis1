@@ -1,4 +1,4 @@
-package com.lsis1;
+package com.lsis1.server;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;
@@ -15,6 +15,7 @@ import static io.vertx.ext.web.handler.StaticHandler.DEFAULT_WEB_ROOT;
 import com.lsis1.Model.Competicao;
 import com.lsis1.Model.MQTT;
 import com.lsis1.Model.Repository;
+import com.lsis1.Handlers;
 import com.lsis1.Controller.compController;
 
 /*

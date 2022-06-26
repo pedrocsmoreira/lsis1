@@ -1,4 +1,4 @@
-package com.lsis1;
+package com.lsis1.server;
 
 import io.vertx.core.Vertx;
 

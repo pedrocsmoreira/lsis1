@@ -1,7 +1,8 @@
-package com.lsis1.Model;
+package com.lsis1.mqtt;
 
 
-import com.lsis1.Controllers.controllerMQTT;
+import com.lsis1.controller.controllerMQTT;
+
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

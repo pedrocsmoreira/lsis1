@@ -1,4 +1,4 @@
-package com.lsis1;
+package com.lsis1.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
