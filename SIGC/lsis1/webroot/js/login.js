@@ -10,10 +10,6 @@ function login(){
         else
             window.alert("O username do utilizador inserido não existe!");
         throw Error("Erro no servidor!!");
-        if(){
-            document.getElementById("formLogin").submit();
-            window.location.assign("/temposComp");
-        }
     }).then((result) => {
         console.log("LOGIN FEITO");
     }).catch(erro => {
